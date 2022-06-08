@@ -25,5 +25,5 @@ export class OrderDto {
 
   @include()
   @nested(() => ProductDto, true)
-  products: UserDto[];
+  products: ProductDto[];
 }

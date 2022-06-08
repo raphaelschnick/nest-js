@@ -1,17 +1,21 @@
 import { Controller, Get, Param, ParseIntPipe } from '@nestjs/common';
 import { UserService } from './user.service';
+import { buildMapper } from 'dto-mapper';
+import { UserDto } from './dto/User.dto';
 
 @Controller('user')
 export class UserController {
   constructor(private readonly userService: UserService) {}
 
+  private readonly mapper = buildMapper(UserDto);
+
   @Get()
-  getList() {
-    return this.userService.getList();
+  async getList() {
+    return this.mapper.serialize(await this.userService.getList());
   }
 
   @Get(':id')
-  getById(@Param('id', ParseIntPipe) id: number) {
-    return this.userService.getById(id);
+  async getById(@Param('id', ParseIntPipe) id: number) {
+    return this.mapper.serialize(await this.userService.getById(id));
   }
 }

@@ -14,10 +14,15 @@ export class CartService {
   ) {}
 
   async getByUser(user: User): Promise<Cart> {
-    return this.cartRepository.findOne({
+    const cart = await this.cartRepository.findOne({
       where: { user },
       relations: { products: true, user: true },
     });
+    if (cart && cart.id) {
+      return cart;
+    } else {
+      return this.create(user);
+    }
   }
   async get(id: number): Promise<Cart | undefined> {
     const cart = await this.cartRepository.findOne({
@@ -32,13 +37,13 @@ export class CartService {
   }
 
   async addToCart(cart: Cart, products: Product[]) {
-    products.forEach((product) => {
-      this.cartRepository
+    for (const product of products) {
+      await this.cartRepository
         .createQueryBuilder()
         .relation(Cart, 'products')
-        .of(product)
+        .of(cart)
         .add(product);
-    });
+    }
     return this.get(cart.id);
   }
 
@@ -53,11 +58,16 @@ export class CartService {
     const user = cart.user;
     const products = cart.products;
     await this.create(user);
+    await this.delete(cart);
     return this.orderService.create(products, user);
   }
 
   create(user: User) {
-    const newCart = this.cartRepository.create({ user });
+    const newCart = this.cartRepository.create({ user, products: [] });
     return this.cartRepository.save(newCart);
+  }
+
+  async delete(cart: Cart) {
+    return this.cartRepository.delete(cart.id);
   }
 }

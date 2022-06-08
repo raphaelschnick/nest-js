@@ -47,7 +47,7 @@ export class ProductController {
   @Post()
   async create(@Request() request, @Body() product: CreateProductDto) {
     const user = await this.userService.get(request.user.username);
-    const response = this.productService.create(product, user);
+    const response = await this.productService.create(product, user);
     return this.mapper.serialize(response);
   }
 }

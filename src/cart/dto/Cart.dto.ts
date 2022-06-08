@@ -5,6 +5,9 @@ import { ProductDto } from '../../product/dto/Product.dto';
 @dto()
 export class CartDto {
   @include()
+  id: number;
+
+  @include()
   @nested(() => UserDto, false)
   user: UserDto;
 
