@@ -45,14 +45,9 @@ export class ProductController {
   @UseGuards(JwtAuthGuard)
   @UsePipes(ValidationPipe)
   @Post()
-  create(@Request() request, @Body() product: CreateProductDto) {
-    this.userService
-      .get(request.user.username)
-      .then((user) => {
-        return this.productService.create(product, user);
-      })
-      .catch((reason) => {
-        console.error(reason);
-      });
+  async create(@Request() request, @Body() product: CreateProductDto) {
+    const user = await this.userService.get(request.user.username);
+    const response = this.productService.create(product, user);
+    return this.mapper.serialize(response);
   }
 }

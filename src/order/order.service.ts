@@ -3,7 +3,6 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Order, Product, User } from '../typeorm';
 import { Repository } from 'typeorm';
 import { OrderNotFoundException } from '../exception/order-not-found.exception';
-import { CreateOrderDto } from './dto/CreateOrder.dto';
 
 @Injectable()
 export class OrderService {

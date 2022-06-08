@@ -65,12 +65,10 @@ export class CartController {
     if (products?.length >= 1) {
       const cart = await this.cartService.get(id);
       const productList = [];
-      products.forEach((id) => {
-        try {
-          this.productService.get(id).then((product) => {
-            productList.push(product);
-          });
-        } catch (e) {}
+      products.forEach((productId) => {
+        this.productService.get(productId).then((product) => {
+          productList.push(product);
+        });
       });
       const updatedCart = await this.cartService.addToCart(cart, productList);
       console.log(updatedCart);

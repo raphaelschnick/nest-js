@@ -31,19 +31,20 @@ export class CartService {
     }
   }
 
-  addToCart(cart: Cart, products: Product[]) {
-    products.forEach(async (product) => {
-      await this.cartRepository
+  async addToCart(cart: Cart, products: Product[]) {
+    products.forEach((product) => {
+      this.cartRepository
         .createQueryBuilder()
         .relation(Cart, 'products')
         .of(product)
         .add(product);
     });
+    return this.get(cart.id);
   }
 
   removeFromCart(cart: Cart, product: Product) {
     const products = cart.products;
-    products.indexOf(product);
+    console.log(products.indexOf(product));
     // TODO: remove object
     return this.cartRepository.update(cart.id, { products: products });
   }

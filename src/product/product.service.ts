@@ -28,7 +28,7 @@ export class ProductService {
     }
   }
 
-  create(product: CreateProductDto, owner: User) {
+  async create(product: CreateProductDto, owner: User) {
     const newProduct = this.productRepository.create(product);
     newProduct.owner = owner;
     return this.productRepository.save(newProduct);
