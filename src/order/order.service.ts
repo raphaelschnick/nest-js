@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Order, User } from '../typeorm';
+import { Order, Product, User } from '../typeorm';
 import { Repository } from 'typeorm';
 import { OrderNotFoundException } from '../exception/order-not-found.exception';
 import { CreateOrderDto } from './dto/CreateOrder.dto';
@@ -29,12 +29,12 @@ export class OrderService {
     }
   }
 
-  create(order: CreateOrderDto, user: User) {
-    const o = new Order();
-    o.user = user;
-    o.createdAt = new Date();
-    o.shippingDate = new Date();
-    const newOrder = this.orderRepository.create(o);
-    return this.orderRepository.save(newOrder);
+  create(products: Product[], user: User) {
+    const order = this.orderRepository.create({
+      products,
+      user,
+      createdAt: new Date(),
+    });
+    return this.orderRepository.save(order);
   }
 }

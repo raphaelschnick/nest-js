@@ -16,7 +16,7 @@ export class ProductService {
     return this.productRepository.find({ relations: { owner: true } });
   }
 
-  async get(id: number): Promise<Product | ProductNotFoundException> {
+  async get(id: number): Promise<Product | undefined> {
     const user = await this.productRepository.findOne({
       where: { id },
       relations: { owner: true },
