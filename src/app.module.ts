@@ -5,12 +5,15 @@ import { AuthModule } from './auth/auth.module';
 import { UserModule } from './user/user.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ProductModule } from './product/product.module';
+import { OrderModule } from './order/order.module';
 import entities from './typeorm';
 
 @Module({
   imports: [
     AuthModule,
     UserModule,
+    ProductModule,
+    OrderModule,
     TypeOrmModule.forRoot({
       type: 'mysql',
       host: 'localhost',
@@ -21,7 +24,6 @@ import entities from './typeorm';
       entities,
       synchronize: true,
     }),
-    ProductModule,
   ],
   controllers: [AppController],
   providers: [AppService],
