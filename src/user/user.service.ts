@@ -1,17 +1,15 @@
 import { Injectable } from '@nestjs/common';
 import { CreateUserDto } from './dto/CreateUser.dto';
 import { InjectRepository } from '@nestjs/typeorm';
-import { User as UserEntity } from '../typeorm';
+import { User } from '../typeorm';
 import { Repository } from 'typeorm';
 import { UserNotFoundException } from '../exception/user-not-found.exception';
-
-export type User = any;
 
 @Injectable()
 export class UserService {
   constructor(
-    @InjectRepository(UserEntity)
-    private readonly userRepository: Repository<UserEntity>,
+    @InjectRepository(User)
+    private readonly userRepository: Repository<User>,
   ) {}
 
   async getList(): Promise<User[]> {
@@ -22,7 +20,7 @@ export class UserService {
     return this.userRepository.findOneBy({ username });
   }
 
-  async getById(id: number): Promise<User | undefined> {
+  async getById(id: number): Promise<User | UserNotFoundException> {
     const user = await this.userRepository.findOneBy({ id });
     if (user && user.id) {
       return user;
