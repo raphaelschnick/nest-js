@@ -36,7 +36,7 @@ export class CartService {
     }
   }
 
-  async addToCart(cart: Cart, products: Product[]) {
+  async addToCart(cart: Cart, products: Product[]): Promise<Cart> {
     for (const product of products) {
       await this.cartRepository
         .createQueryBuilder()
